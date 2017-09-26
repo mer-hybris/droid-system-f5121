@@ -6,6 +6,10 @@
 
 %define device suzu
 
+%if 0%{?_obs_build_project:1}
+%define _target_cpu %{device_rpm_architecture_string}
+%endif
+
 Name:          droid-system-f5121
 Provides:      droid-system
 Summary:       Built from source /system for Droid HAL adaptations
@@ -24,6 +28,12 @@ Source0:       %{name}-%{version}.tgz
 %{summary}
 
 %prep
+if 0%{?_obs_build_project:1}
+%if %{?device_rpm_architecture_string:0}%{!?device_rpm_architecture_string:1}
+echo "device_rpm_architecture_string is not defined"
+exit -1
+%endif
+%endif
 
 %setup -T -c -n droid-system-f5121
 sudo chown -R abuild:abuild /home/abuild/src/droid/
