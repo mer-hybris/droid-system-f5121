@@ -1,0 +1,12 @@
+* Fri Jul 28 2017 Andrew Branson <andrew.branson@jollamobile.com> - 0.0.4
+- [f5121] Built with latest sony repos (incl new bt-fm) and no blobs. JB#39265
+
+* Fri May 19 2017 Andrew Branson <andrew.branson@jollamobile.com> - 0.0.3
+- [system] Rebuilt on latest BSP. Contributes JB#38465
+
+* Tue Apr 18 2017 Andrew Branson <andrew.branson@jollamobile.com> - 0.0.2
+- [f5121] Update system files under sparse directory from system image built with Sony v10 blobs. Minimal manifest for Sailfish build. Fixes JB#38373. Contributes JB#37558
+
+* Wed Feb 15 2017 Matti Kosola <matti.kosola@jolla.com> - 0.0.1
+- [f5121] Add system files under sparse directory. JB#37784
+
