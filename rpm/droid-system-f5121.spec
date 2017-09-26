@@ -28,7 +28,7 @@ Source0:       %{name}-%{version}.tgz
 %{summary}
 
 %prep
-if 0%{?_obs_build_project:1}
+%if 0%{?_obs_build_project:1}
 %if %{?device_rpm_architecture_string:0}%{!?device_rpm_architecture_string:1}
 echo "device_rpm_architecture_string is not defined"
 exit -1
