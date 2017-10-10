@@ -55,6 +55,11 @@ droid-make %{?_smp_mflags} libnfc-nci bluetooth.default_32 systemtarball
 rm -rf tmp
 mkdir tmp
 
+%pretrans -p <lua>
+os.execute("rm -rf /system/vendor/firmware")
+os.execute("rm -rf /system/vendor/lib/egl")
+os.execute("rm -rf /system/vendor/lib64/egl")
+
 %install
 
 # Install
@@ -64,9 +69,9 @@ tar -xf out/target/product/%{device}/system.tar.bz2 -C $RPM_BUILD_ROOT/
 
 # Get the uid and gid from the tar output and format lines so that those are ok for %files in rpm
 cat tmp/system-files.txt | awk '{ split($2,ids,"/"); print "%attr(-," ids[1] "," ids[2] ") /" $6 }' > tmp/system.files.tmp
-# Remove non-redistributable bits (they get downloaded by users and flashed+mounted separately)
-rm -rf $RPM_BUILD_ROOT/system/vendor/*
-sed -i '/system\/vendor\/[a-zA-Z0-9_.].*/d' tmp/system.files.tmp
+# Remove bits which are pending for their redistributability status
+rm $RPM_BUILD_ROOT/system/vendor/etc/firmware/libpn547_fw.so
+sed -i '/system\/vendor\/etc\/firmware\/libpn547_fw.so/d' tmp/system.files.tmp
 # Add %dir macro in front of the directories
 cat tmp/system.files.tmp | awk '{ if (/\/$/) print "%dir "$0; else print $0}' > tmp/system.files
 
