@@ -63,9 +63,18 @@ os.execute("rm -rf /system/vendor/lib64/egl")
 %install
 
 # Install
-
 tar --list -vf out/target/product/%{device}/system.tar.bz2 > tmp/system-files.txt
 tar -xf out/target/product/%{device}/system.tar.bz2 -C $RPM_BUILD_ROOT/
+
+# Remove unneeded Android files
+rm -rf $RPM_BUILD_ROOT/system/framework/
+rm -rf $RPM_BUILD_ROOT/system/priv-app/
+rm -rf $RPM_BUILD_ROOT/system/app/
+rm -rf $RPM_BUILD_ROOT/system/media/
+rm -rf $RPM_BUILD_ROOT/system/tts/
+rm -f $RPM_BUILD_ROOT/system/lib/libpac.so
+rm -f $RPM_BUILD_ROOT/system/lib64/libpac.so
+rm -f $RPM_BUILD_ROOT/lib64/libjni_pacprocessor.so
 
 # Get the uid and gid from the tar output and format lines so that those are ok for %files in rpm
 cat tmp/system-files.txt | awk '{ split($2,ids,"/"); print "%attr(-," ids[1] "," ids[2] ") /" $6 }' > tmp/system.files.tmp
