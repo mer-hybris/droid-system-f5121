@@ -69,9 +69,23 @@ tar -xf out/target/product/%{device}/system.tar.bz2 -C $RPM_BUILD_ROOT/
 
 # Get the uid and gid from the tar output and format lines so that those are ok for %files in rpm
 cat tmp/system-files.txt | awk '{ split($2,ids,"/"); print "%attr(-," ids[1] "," ids[2] ") /" $6 }' > tmp/system.files.tmp
-# Remove bits which are pending for their redistributability status
-rm $RPM_BUILD_ROOT/system/vendor/etc/firmware/libpn547_fw.so
-sed -i '/system\/vendor\/etc\/firmware\/libpn547_fw.so/d' tmp/system.files.tmp
+
+delete_files_and_dirs() {
+  files=$1
+  deletelist=$2
+  if [ -e $deletelist ]; then
+    egrep -v '^#' $deletelist | (
+      while read file; do
+        rm -r $RPM_BUILD_ROOT/$file
+        grep -vE "$file" $files > tmp/$$.files
+        mv tmp/$$.files $files
+      done)
+  fi
+}
+
+# Remove unused/unwanted bits
+delete_files_and_dirs tmp/system.files.tmp delete_system.list
+
 # Add %dir macro in front of the directories
 cat tmp/system.files.tmp | awk '{ if (/\/$/) print "%dir "$0; else print $0}' > tmp/system.files
 
