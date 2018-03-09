@@ -22,10 +22,18 @@ BuildRequires: ubu-trusty
 BuildRequires: sudo-for-abuild
 BuildRequires: droid-src-syspart-full
 %endif
+Requires:      droid-system-f512x
 Source0:       %{name}-%{version}.tgz
 
 %description
 %{summary}
+
+%package -n     droid-system-f512x
+Group:          System
+Summary:        Built from source /system for Droid HAL adaptations
+
+%description -n droid-system-f512x
+%{summary}.
 
 %prep
 %if 0%{?_obs_build_project:1}
@@ -84,7 +92,7 @@ delete_files_and_dirs() {
 }
 
 # Remove unused/unwanted bits
-delete_files_and_dirs tmp/system.files.tmp delete_system.list
+delete_files_and_dirs tmp/system.files.tmp external/droid-system-f5121/delete_system.list
 
 # Add %dir macro in front of the directories
 cat tmp/system.files.tmp | awk '{ if (/\/$/) print "%dir "$0; else print $0}' > tmp/system.files
@@ -95,6 +103,10 @@ cat tmp/system.files.tmp | awk '{ if (/\/$/) print "%dir "$0; else print $0}' > 
 sed -i 's/,0/,root/g' tmp/system.files
 sed -i 's/,2000/,shell/g' tmp/system.files
 
+# f5121 files
+grep '\/system\/build.prop' tmp/system.files > tmp/f5121-system.files
+sed --in-place '/\/system\/build.prop/d' tmp/system.files
+
 # OK -all the stuff from out/ that we need is now extracted
 # Clean it up if we're on the OBS and need tmpfs build space:
 %if 0%{?_obs_build_project:1}
@@ -103,6 +115,9 @@ rm -rf out
 # HACK: for some reason this file has 000 perms, causing a failure
 chmod +r $RPM_BUILD_ROOT/system/etc/fs_config_files
 
-%files -f tmp/system.files
+%files -f tmp/f5121-system.files
+%defattr(-,root,root,-)
+
+%files -n droid-system-f512x -f tmp/system.files
 %defattr(-,root,root,-)
 
