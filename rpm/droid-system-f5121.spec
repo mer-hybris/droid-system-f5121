@@ -63,7 +63,7 @@ droid-make %{?_smp_mflags} libnfc-nci bluetooth.default_32 systemtarball
 rm -rf tmp
 mkdir tmp
 
-%pretrans -p <lua>
+%pretrans -n droid-system-f512x -p <lua>
 os.execute("rm -rf /system/vendor/firmware")
 os.execute("rm -rf /system/vendor/lib/egl")
 os.execute("rm -rf /system/vendor/lib64/egl")
