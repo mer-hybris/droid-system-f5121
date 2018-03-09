@@ -84,7 +84,7 @@ delete_files_and_dirs() {
 }
 
 # Remove unused/unwanted bits
-delete_files_and_dirs tmp/system.files.tmp delete_system.list
+delete_files_and_dirs tmp/system.files.tmp external/droid-system-f5121/delete_system.list
 
 # Add %dir macro in front of the directories
 cat tmp/system.files.tmp | awk '{ if (/\/$/) print "%dir "$0; else print $0}' > tmp/system.files
