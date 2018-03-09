@@ -8,11 +8,9 @@
 /system/lib/libpac.so
 /system/lib/libart.so
 /system/lib/libart-compiler.so
-/system/lib/libpdfium.so
 /system/lib64/libpac.so
 /system/lib64/libart.so
 /system/lib64/libart-compiler.so
-/system/lib64/libpdfium.so
 /system/lib/modules
 /system/media
 /system/priv-app
