@@ -67,6 +67,8 @@ mkdir tmp
 os.execute("rm -rf /system/vendor/firmware")
 os.execute("rm -rf /system/vendor/lib/egl")
 os.execute("rm -rf /system/vendor/lib64/egl")
+os.execute("rm -rf /system/bin/iptables")
+os.execute("rm -rf /system/bin/ip6tables")
 
 %install
 
